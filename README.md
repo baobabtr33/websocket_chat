@@ -20,3 +20,8 @@ To chat, go to http://localhost:3001/
 A prompt will appear, asking for your username.
 
 Start Chatting!
+
+
+
+## Reference
+Tweaks made on this ws repo: https://github.com/wahengchang/nodejs-websocket-example
