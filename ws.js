@@ -5,7 +5,6 @@ wss.on('connection', function (ws) {
   console.log('opened');
 
   ws.on('message', function (message) {
-    //console.log('received: %s', message)
     message = JSON.parse(message);
     console.log(message)
     if (message["type"] == "init"){
@@ -16,7 +15,7 @@ wss.on('connection', function (ws) {
     wss.clients.forEach(function each(client) {
         client.send(JSON.stringify(message));
     });
-    
+
   });
 
   ws.on('close', function () {
