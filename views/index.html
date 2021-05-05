@@ -18,18 +18,23 @@
 
     ws.onopen = function () {
         console.log('websocket is connected ...')
+        // Client username to server
         var msg = {
           "userName": userName,
           "msg": userName + " Connected",
           "type": "init"
         }
+        // All msg as JSON
         ws.send(JSON.stringify(msg))
     }
 
     ws.onmessage = function(evt){
       console.log(evt, "SERVER")
       msg = evt.data
+      // All msg as JSON -> parse JSON
+
       msg = JSON.parse(msg);
+      // Update msg with Jquery
       if (msg["userName"] == "Server"){
         $('#chat_messages').append($('<li>').html('<i>'+msg["msg"]+'</i>'));
       }else{
@@ -43,6 +48,7 @@
       console.log("client - message sent", $('#insert_chat_message').val())
       e.preventDefault();
 
+      // send input message as JSON
       var msg = {
         "userName": userName,
         "msg": $('#insert_chat_message').val()
