@@ -24,4 +24,4 @@ Start Chatting!
 
 
 ## Reference
-Tweaks made on this ws repo: https://github.com/wahengchang/nodejs-websocket-example
+Tweaks from this ws repo: https://github.com/wahengchang/nodejs-websocket-example
