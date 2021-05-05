@@ -5,18 +5,23 @@ wss.on('connection', function (ws) {
   console.log('opened');
 
   ws.on('message', function (message) {
-    console.log('received: %s', message)
+    //console.log('received: %s', message)
+    message = JSON.parse(message);
+    console.log(message)
+    console.log('received: %s', message["msgFrom"])
+    console.log('received: %s', message["msg"])
+    ws.send(JSON.stringify(message))
   });
 
   ws.on('close', function () {
     console.log('closed');
   });
 
-  setInterval( () => {
+  /*setInterval( () => {
       try {
         ws.send(`${new Date()}`);
       } catch (e) {};
     },
     1000
-  );
+  );*/
 })

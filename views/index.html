@@ -6,29 +6,68 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <ul id="chat_messages"></ul>
+    <ul id="chat_messages">
+      <li>AA</li>
+    </ul>
     <form action="/" method="POST" id="chat_form">
       <input id="insert_chat_message" autocomplete="off" autofocus="on" placeholder="Type a message!" /><button>Send Message</button>
     </form>
   </body>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="../../socket.io/socket.io.js"></script>
   <script>
-    var socket = io.connect('http://localhost:3000');
-    var userName = prompt('당신이 채팅방에 참여할 이름을 입력해주세요.');
-    socket.emit('userName', userName);
+    var ws = new WebSocket('ws://localhost:40510');
+    var userName = prompt("What is your username?");
+
+    ws.onopen = function () {
+        console.log('websocket is connected ...')
+        var msg = {
+          "userName": userName,
+          "msg": userName + " Connected"
+        }
+        ws.send(JSON.stringify(msg))
+        //ws.send(msg)
+    }
+
+    ws.onmessage = function(evt){
+      console.log(evt, "SERVER")
+      msg = evt.data
+      msg = JSON.parse(msg);
+      if (msg["msgFrom"] == "Server"){
+        var ul = document.getElementById("chat_messages");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode("Element 4"));
+        ul.appendChild(li);
+
+        //$('#chat_messages').append($('<li>').html(msg["msg"]));
+      }
+    };
+
     
+    // Jquery
     $('#chat_form').submit(function (e) {
-        e.preventDefault();
-        socket.emit('chatMessage', $('#insert_chat_message').val());
-        $('#insert_chat_message').val('');
-        return false;
+      console.log("client - message sent", $('#insert_chat_message').val())
+      e.preventDefault();
+
+      var msg = {
+        "msgFrom": userName,
+        "msg": $('#insert_chat_message').val()
+      }
+
+      console.log(msg)
+      ws.send(JSON.stringify(msg))
+      $('#insert_chat_message').val('');
+      return false;
     });
+
+
+    /*
     socket.on('chatNotification', function (userName) {
       $('#chat_messages').append($('<li>').html(userName));
     });
     socket.on('chatMessage', function (message) {
       $('#chat_messages').append($('<li>').html(message));
     });
+    */
 </script>
 </html>
+

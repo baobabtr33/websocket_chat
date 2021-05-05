@@ -9,7 +9,7 @@
 
     ws.onopen = function () {
         console.log('websocket is connected ...')
-        ws.send('connected')
+        ws.send('SERVER - connected')
     }
 
     ws.onmessage = function (ev) {
