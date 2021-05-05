@@ -8,20 +8,19 @@ wss.on('connection', function (ws) {
     //console.log('received: %s', message)
     message = JSON.parse(message);
     console.log(message)
-    console.log('received: %s', message["msgFrom"])
-    console.log('received: %s', message["msg"])
-    ws.send(JSON.stringify(message))
+    if (message["type"] == "init"){
+      message["msg"] = message["userName"] +" has joined the room."
+      message["userName"] = "Server"
+    }
+
+    wss.clients.forEach(function each(client) {
+        client.send(JSON.stringify(message));
+    });
+    
   });
 
   ws.on('close', function () {
     console.log('closed');
   });
 
-  /*setInterval( () => {
-      try {
-        ws.send(`${new Date()}`);
-      } catch (e) {};
-    },
-    1000
-  );*/
 })

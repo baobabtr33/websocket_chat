@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <ul id="chat_messages">
-      <li>AA</li>
-    </ul>
+    <ul id="chat_messages"> </ul>
     <form action="/" method="POST" id="chat_form">
       <input id="insert_chat_message" autocomplete="off" autofocus="on" placeholder="Type a message!" /><button>Send Message</button>
     </form>
@@ -22,23 +20,20 @@
         console.log('websocket is connected ...')
         var msg = {
           "userName": userName,
-          "msg": userName + " Connected"
+          "msg": userName + " Connected",
+          "type": "init"
         }
         ws.send(JSON.stringify(msg))
-        //ws.send(msg)
     }
 
     ws.onmessage = function(evt){
       console.log(evt, "SERVER")
       msg = evt.data
       msg = JSON.parse(msg);
-      if (msg["msgFrom"] == "Server"){
-        var ul = document.getElementById("chat_messages");
-        var li = document.createElement("li");
-        li.appendChild(document.createTextNode("Element 4"));
-        ul.appendChild(li);
-
-        //$('#chat_messages').append($('<li>').html(msg["msg"]));
+      if (msg["userName"] == "Server"){
+        $('#chat_messages').append($('<li>').html('<i>'+msg["msg"]+'</i>'));
+      }else{
+        $('#chat_messages').append($('<li>').html('<strong>' + msg["userName"] + ':</strong>' +" "+msg["msg"]));
       }
     };
 
@@ -49,7 +44,7 @@
       e.preventDefault();
 
       var msg = {
-        "msgFrom": userName,
+        "userName": userName,
         "msg": $('#insert_chat_message').val()
       }
 
@@ -59,15 +54,6 @@
       return false;
     });
 
-
-    /*
-    socket.on('chatNotification', function (userName) {
-      $('#chat_messages').append($('<li>').html(userName));
-    });
-    socket.on('chatMessage', function (message) {
-      $('#chat_messages').append($('<li>').html(message));
-    });
-    */
 </script>
 </html>
 
