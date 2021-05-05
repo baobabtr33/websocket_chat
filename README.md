@@ -3,7 +3,7 @@
 ![](img/example.gif)
 
 ## How to Use: 
-Run Server and Client
+Run Server and Client concurrently
 ```
 bash s.sh
 ```
